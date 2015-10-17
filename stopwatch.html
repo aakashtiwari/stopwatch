@@ -1,1 +1,161 @@
-stop watch
+<!DOCTYPE>
+<html>
+<style type="text/css">
+.button{
+	font-size: 20px;
+	}
+.watch{
+	font-size: 60px;
+	font-family: cursive;
+	}
+.watch1{
+	font-size: 40px;
+	font-family: cursive;
+	}
+
+</style>
+<script>
+var myfun,prevhourLap=nexthourLap=prevminLap=nextminLap=prevsecLap=nextsecLap=0; 
+var count=0;
+var startcount =0;
+var pause=false;
+function startStopWatch(){
+	startcount+=1;
+	if(startcount==1){
+	myfun =setInterval(start,1000);
+	function start(){
+		pause=false;
+		var x = parseInt(document.getElementById("s3").innerHTML);
+		var x=x+1;
+		nextsecLap = x;
+		if(x<10){
+		document.getElementById("s3").innerHTML="0"+x;	
+		}else{
+		document.getElementById("s3").innerHTML=x;
+		}
+		if (x>59)
+			{
+			var y = parseInt(document.getElementById("s2").innerHTML);
+			var y=y+1;
+			nextminLap = y;
+			if(y<10){
+				document.getElementById("s2").innerHTML="0"+y;
+				}else{
+				document.getElementById("s2").innerHTML=y;}
+				document.getElementById("s3").innerHTML="00";
+				if (y>59)
+					{
+					var z = parseInt(document.getElementById("s1").innerHTML);
+					var z=z+1;
+					nexthourLap = z;
+					if(z<10){
+						document.getElementById("s1").innerHTML="0"+z;}
+					else{
+						document.getElementById("s1").innerHTML=z;}
+						document.getElementById("s2").innerHTML="00";
+						document.getElementById("s3").innerHTML="00";
+					};
+			};
+		};
+	};
+};
+
+function stopStopWatch(){
+	document.getElementById("s1").innerHTML="00";
+	document.getElementById("s2").innerHTML="00";
+	document.getElementById("s3").innerHTML="00";
+	document.getElementById("lap").innerHTML="";
+	prevhourLap=nexthourLap=prevminLap=nextminLap=prevsecLap=nextsecLap=count=0; 
+	pauseStopWatch();
+
+};
+function pauseStopWatch(){
+  if((pause==false))
+	{
+	clearInterval(myfun);
+	startcount=0;
+	}
+};
+function lapStopWatch(){
+	var x=y=z=0;
+	count+=1;
+	var countnew=count;
+	if(nexthourLap>prevhourLap)
+		{
+			if(nextminLap<prevminLap)
+			{
+			x=(nexthourLap-prevhourLap);
+			}
+			else{
+				x=(nexthourLap-prevhourLap)-1;
+			}
+		}else if(nexthourLap==prevhourLap)
+			{
+				x=nexthourLap-prevhourLap;
+			}
+			else if(nexthourLap<prevhourLap)
+				{
+					x=(24-prevhourLap)+nexthourLap;
+				};
+
+	if(nextminLap>prevminLap)
+		{	
+			if(nextsecLap<prevsecLap){
+			y=(nextminLap-prevminLap)-1;
+			}else{
+			y=(nextminLap-prevminLap);}
+		}
+		else if(nextminLap==prevminLap)
+			{
+				y=nextminLap-prevminLap;
+			}
+			else if(nextminLap<prevminLap)
+				{
+					y=(60-prevminLap)+nextminLap;
+				};
+
+	if(nextsecLap>=prevsecLap)
+	{
+		z=nextsecLap-prevsecLap;
+	}else {
+		z=(60-prevsecLap)+nextsecLap;
+	};
+	var lap =[x,y,z,prevhourLap,nexthourLap,prevminLap,nextminLap,prevsecLap,nextsecLap,countnew]
+	for (i=0;i<lap.length;i++){
+		lap[i]=parseInt(lap[i]);
+		}
+	for (i=0;i<lap.length;i++){
+		if(lap[i]<10){
+			lap[i]="0"+lap[i];
+		}
+		x=lap[0];
+		y=lap[1];
+		z=lap[2];
+		prevhourLap=lap[3];
+		nexthourLap=lap[4];
+		prevminLap=lap[5];  
+		nextminLap=lap[6];
+		prevsecLap=lap[7];
+		nextsecLap=lap[8];
+		countnew=lap[9];
+	}
+	document.getElementById("lap").innerHTML += "Lap:"+ countnew+" : "+ x +":"+ y +":"+ z +"  from  "+prevhourLap+":"+prevminLap+":"+prevsecLap+"  TO  "+nexthourLap+":"+nextminLap+":"+nextsecLap+"<br>";
+	prevhourLap=nexthourLap;
+	prevminLap=nextminLap;
+	prevsecLap=nextsecLap;
+}
+</script>
+<body>
+
+<div class="watch">
+<span id="s1">00</span>:<span id="s2">00</span>:<span id="s3">00</span>	
+</div>
+
+<button type="button" onclick="startStopWatch()" class="button">Start</button>
+<button type="button" onclick="pauseStopWatch()" class="button">Pause</button>
+<button type="button" onclick="stopStopWatch()" class="button">Reset</button>
+<button type="button" onclick="lapStopWatch()" class="button">Lap</button>
+
+<div class="watch1" id="lap"></div>
+</body>
+</html>
